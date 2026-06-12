@@ -1,0 +1,33 @@
+server:
+  port: 8120
+
+spring:
+  application:
+    name: xixin-exam
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/xixin_exam?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1220}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: XIXIN_GROUP
+        failure-tolerance-enabled: true
+      config:
+        import-check:
+          enabled: false
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        file-extension: yml
+        group: XIXIN_GROUP
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true

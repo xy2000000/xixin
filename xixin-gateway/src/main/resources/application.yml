@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration
+  application:
+    name: xixin-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        # namespace: public (default)
+        group: XIXIN_GROUP
+        failure-tolerance-enabled: true
+      config:
+        import-check:
+          enabled: false
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        # namespace: public (default)
+        file-extension: yml
+        group: XIXIN_GROUP
+        shared-configs:
+          - data-id: common-config.yml
+            group: XIXIN_GROUP
+            refresh: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://xixin-auth
+          predicates:
+            - Path=/api/auth/**
+        - id: user-service
+          uri: lb://xixin-user
+          predicates:
+            - Path=/api/user/**
+        - id: exam-service
+          uri: lb://xixin-exam
+          predicates:
+            - Path=/api/exam/**
+        - id: report-service
+          uri: lb://xixin-report
+          predicates:
+            - Path=/api/report/**
+        - id: system-service
+          uri: lb://xixin-system
+          predicates:
+            - Path=/api/system/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
