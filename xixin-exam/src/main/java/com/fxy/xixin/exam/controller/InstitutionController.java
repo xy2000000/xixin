@@ -56,7 +56,7 @@ public class InstitutionController {
      *
      * @return 启用的机构列表
      */
-    @RequireRole({"PATIENT"})
+    @RequireRole({"PATIENT", "ADMIN"})
     @GetMapping("/active")
     public R<List<Institution>> activeList() {
         List<Institution> list = institutionService.list(

@@ -55,7 +55,7 @@ public class AppointmentFlowController {
      * @param type 预约类型（individual=个人, group=团体, onboarding=入职, travel=出入境）
      * @return 该类型可用的启用机构列表
      */
-    @RequireRole({"PATIENT"})
+    @RequireRole({"PATIENT", "ADMIN"})
     @GetMapping("/appointment-types/{type}/institutions")
     public R<List<Institution>> getInstitutionsByType(@PathVariable String type) {
         // 第一步：查询预约类型-机构关联表，获取该类型对应的机构ID列表
@@ -94,7 +94,7 @@ public class AppointmentFlowController {
      * @param id 机构ID
      * @return 该机构提供的上架套餐列表
      */
-    @RequireRole({"PATIENT"})
+    @RequireRole({"PATIENT", "ADMIN"})
     @GetMapping("/institutions/{id}/packages")
     public R<List<ExamPackage>> getPackagesByInstitution(@PathVariable Long id) {
         // 第一步：查询机构-套餐关联表，获取该机构提供的套餐ID列表
