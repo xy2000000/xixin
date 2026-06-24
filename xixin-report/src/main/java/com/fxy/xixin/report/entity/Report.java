@@ -32,7 +32,10 @@ public class Report extends BaseEntity {
      */
     private Long appointmentId;
     /**
-     * 医生ID，生成报告的医生
+     * 医生对应的系统用户ID，生成报告的医生。
+     * <p><b>重要：此字段存储的是 t_doctor.user_id（即 t_user.id），而非 t_doctor.id。</b>
+     * 联表查询时应使用 {@code JOIN t_doctor d ON t_report.doctor_id = d.user_id}，
+     * 而非 {@code ON t_report.doctor_id = d.id}。</p>
      */
     private Long doctorId;
     /**

@@ -39,8 +39,10 @@ public class ExamPackage extends BaseEntity {
      */
     private String description;
     /**
-     * 绑定医生ID，关联负责此套餐的医生（t_doctor.user_id）。
-     * 患者预约此套餐后，系统自动将该医生分配给预约。
+     * 绑定医生对应的系统用户ID。
+     * <p><b>重要：此字段存储的是 t_doctor.user_id（即 t_user.id），而非 t_doctor.id。</b>
+     * 联表查询时应使用 {@code JOIN t_doctor d ON t_exam_package.doctor_id = d.user_id}，
+     * 而非 {@code ON t_exam_package.doctor_id = d.id}。</p>
      */
     private Long doctorId;
     /**

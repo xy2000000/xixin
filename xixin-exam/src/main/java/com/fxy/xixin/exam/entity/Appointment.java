@@ -39,7 +39,10 @@ public class Appointment extends BaseEntity {
      */
     private Long institutionId;
     /**
-     * 分配的医生ID（关联 t_doctor.user_id），根据套餐绑定的医生自动分配
+     * 分配的医生对应的系统用户ID。
+     * <p><b>重要：此字段存储的是 t_doctor.user_id（即 t_user.id），而非 t_doctor.id。</b>
+     * 联表查询时应使用 {@code JOIN t_doctor d ON t_appointment.doctor_id = d.user_id}，
+     * 而非 {@code ON t_appointment.doctor_id = d.id}。</p>
      */
     private Long doctorId;
     /**
