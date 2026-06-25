@@ -33,13 +33,13 @@ public class ExamItemController {
     /**
      * 分页查询指定套餐下的体检项目列表
      *
-     * <p><b>权限：PATIENT、ADMIN</b></p>
+     * <p><b>权限：PATIENT、DOCTOR、ADMIN</b></p>
      *
      * @param packageId 套餐ID
      * @param page      分页参数
      * @return 分页项目数据
      */
-    @RequireRole({"PATIENT", "ADMIN"})
+    @RequireRole({"PATIENT", "DOCTOR", "ADMIN"})
     @GetMapping
     public R<PageResult<ExamItem>> list(@PathVariable Long packageId, PageDTO page) {
         IPage<ExamItem> result = examItemService.page(page.toPage(),
@@ -50,12 +50,12 @@ public class ExamItemController {
     /**
      * 根据ID查询单个体检项目详情
      *
-     * <p><b>权限：PATIENT、ADMIN</b></p>
+     * <p><b>权限：PATIENT、DOCTOR、ADMIN</b></p>
      *
      * @param id 项目ID
      * @return 项目详情
      */
-    @RequireRole({"PATIENT", "ADMIN"})
+    @RequireRole({"PATIENT", "DOCTOR", "ADMIN"})
     @GetMapping("/{id}")
     public R<ExamItem> getById(@PathVariable Long id) {
         return R.ok(examItemService.getById(id));

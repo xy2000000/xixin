@@ -53,12 +53,12 @@ public class ExamPackageController {
     /**
      * 根据ID查询套餐详情（含检查项目列表）
      *
-     * <p><b>权限：PATIENT、ADMIN</b></p>
+     * <p><b>权限：PATIENT、DOCTOR、ADMIN</b></p>
      *
      * @param id 套餐ID
      * @return 套餐详情（含该套餐下的全部检查项目）
      */
-    @RequireRole({"PATIENT", "ADMIN"})
+    @RequireRole({"PATIENT", "DOCTOR", "ADMIN"})
     @GetMapping("/{id}")
     public R<ExamPackage> getById(@PathVariable Long id) {
         ExamPackage examPackage = examPackageService.getById(id);

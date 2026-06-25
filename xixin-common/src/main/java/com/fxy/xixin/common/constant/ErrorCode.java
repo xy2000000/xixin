@@ -35,6 +35,7 @@ public enum ErrorCode {
     USER_ACCOUNT_DISABLED(1003, "账号已被禁用"),
     USER_PHONE_EXIST(1004, "手机号已注册"),
     USERNAME_EXIST(1005, "用户名已存在"),
+    PATIENT_NOT_EXIST(1006, "档案不存在"),
 
     // 2xxx: 体检模块
     APPOINTMENT_CONFLICT(2001, "预约时间冲突"),

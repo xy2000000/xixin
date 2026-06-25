@@ -192,6 +192,44 @@ public class AppointmentController {
     }
 
     /**
+     * 标记体检完成
+     * <p>
+     * 医生确认患者已完成体检后，将预约状态设为"已完成"（status=3）。
+     * 只有负责该预约的医生或管理员可以执行此操作。
+     * </p>
+     *
+     * <p><b>权限：DOCTOR、ADMIN</b></p>
+     *
+     * @param id 预约ID
+     * @return 操作结果
+     */
+    @PutMapping("/{id}/complete")
+    @RequireRole({"DOCTOR", "ADMIN"})
+    public R<Void> complete(@PathVariable Long id) {
+        Appointment appointment = appointmentService.getById(id);
+        if (appointment == null) {
+            throw new BusinessException(ErrorCode.APPOINTMENT_NOT_EXIST);
+        }
+
+        String role = UserContext.getRole();
+        Long userId = UserContext.getUserId();
+
+        // 医生只能完成分配给自己的预约
+        if ("DOCTOR".equalsIgnoreCase(role) && !appointment.getDoctorId().equals(userId)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "无权完成未分配给您的预约");
+        }
+
+        // 只能对"已确认"状态的预约标记完成
+        if (appointment.getStatus() != 1) {
+            throw new BusinessException(ErrorCode.APPOINTMENT_CANNOT_CANCEL, "当前状态不可标记完成");
+        }
+
+        appointment.setStatus(3);
+        appointmentService.updateById(appointment);
+        return R.ok();
+    }
+
+    /**
      * 删除预约记录（逻辑删除）
      *
      * <p><b>权限：ADMIN</b></p>

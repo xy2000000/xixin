@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fxy.xixin.auth.dto.LoginDTO;
 import com.fxy.xixin.auth.dto.RegisterDTO;
 import com.fxy.xixin.auth.dto.TokenResult;
+import com.fxy.xixin.auth.entity.Patient;
 import com.fxy.xixin.auth.entity.User;
+import com.fxy.xixin.auth.mapper.PatientMapper;
 import com.fxy.xixin.auth.mapper.UserMapper;
 import com.fxy.xixin.auth.service.AuthService;
 import com.fxy.xixin.common.constant.ErrorCode;
@@ -34,6 +36,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
+    private final PatientMapper patientMapper;
 
     /**
      * 用户登录认证实现
@@ -105,5 +108,13 @@ public class AuthServiceImpl implements AuthService {
         user.setStatus(1);
 
         userMapper.insert(user);
+
+        // 如果注册的是患者，同步创建体检人档案
+        if ("PATIENT".equalsIgnoreCase(user.getRole())) {
+            Patient patient = new Patient();
+            patient.setUserId(user.getId());
+            patient.setName(user.getRealName());
+            patientMapper.insert(patient);
+        }
     }
 }
