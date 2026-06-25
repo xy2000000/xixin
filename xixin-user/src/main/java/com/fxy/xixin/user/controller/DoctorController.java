@@ -44,16 +44,16 @@ public class DoctorController {
     }
 
     /**
-     * 根据ID查询医生详情
+     * 根据用户ID查询医生详情
      *
      * <p><b>权限：DOCTOR、ADMIN</b></p>
      *
-     * @param id 医生ID
+     * @param id 关联的系统用户ID（userId）
      * @return 医生详细信息（含科室、职称、专长、简介）
      */
     @RequireRole({"DOCTOR", "ADMIN"})
     @GetMapping("/{id}")
     public R<Doctor> getById(@PathVariable Long id) {
-        return R.ok(doctorService.getById(id));
+        return R.ok(doctorService.lambdaQuery().eq(Doctor::getUserId, id).one());
     }
 }

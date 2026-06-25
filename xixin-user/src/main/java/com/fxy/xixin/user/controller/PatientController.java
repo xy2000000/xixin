@@ -45,16 +45,16 @@ public class PatientController {
     }
 
     /**
-     * 根据ID查询体检人详情
+     * 根据用户ID查询体检人详情
      *
      * <p><b>权限：DOCTOR、ADMIN</b></p>
      *
-     * @param id 体检人ID
+     * @param id 关联的系统用户ID（userId）
      * @return 体检人详细信息（含姓名、性别、出生日期、身份证号、紧急联系人等）
      */
     @RequireRole({"DOCTOR", "ADMIN"})
     @GetMapping("/{id}")
     public R<Patient> getById(@PathVariable Long id) {
-        return R.ok(patientService.getById(id));
+        return R.ok(patientService.lambdaQuery().eq(Patient::getUserId, id).one());
     }
 }
