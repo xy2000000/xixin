@@ -42,9 +42,15 @@ public class UserController {
      */
     @RequireRole({"ADMIN"})
     @GetMapping
-    public R<PageResult<User>> list(PageDTO page) {
-        IPage<User> result = userMapper.selectPage(page.toPage(),
-                new LambdaQueryWrapper<User>().orderByDesc(User::getCreateTime));
+    public R<PageResult<User>> list(PageDTO page, @RequestParam(required = false) String keyword) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.hasText(keyword)) {
+            wrapper.like(User::getUsername, keyword)
+                   .or()
+                   .like(User::getRealName, keyword);
+        }
+        wrapper.orderByDesc(User::getCreateTime);
+        IPage<User> result = userMapper.selectPage(page.toPage(), wrapper);
         return R.ok(PageResult.of(result));
     }
 
