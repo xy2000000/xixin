@@ -29,4 +29,7 @@ public class ChatController {
         String chatId = request.getOrDefault("chatId", "default");
         return chatService.stream(message, chatId);
     }
+
+
+
 }
