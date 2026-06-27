@@ -35,4 +35,12 @@ public interface AuthService {
      * @param dto 注册请求参数
      */
     void register(RegisterDTO dto);
+
+    /**
+     * 更新用户头像
+     *
+     * @param userId    用户ID
+     * @param avatarUrl 头像URL（来自文件服务的上传结果）
+     */
+    void updateAvatar(Long userId, String avatarUrl);
 }

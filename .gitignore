@@ -46,5 +46,8 @@ Thumbs.db
 application-local.yml
 bootstrap-local.yml
 
+### Claude Code ###
+.claude/
+
 ### Generated Code Marker ###
 .generated

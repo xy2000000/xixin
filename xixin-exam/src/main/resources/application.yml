@@ -27,6 +27,16 @@ spring:
         file-extension: yml
         group: XIXIN_GROUP
 
+  rabbitmq:
+    host: ${RABBIT_HOST:127.0.0.1}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USER:guest}
+    password: ${RABBIT_PASS:guest}
+
+xixin:
+  rabbitmq:
+    enabled: true
+
 mybatis-plus:
   global-config:
     db-config:

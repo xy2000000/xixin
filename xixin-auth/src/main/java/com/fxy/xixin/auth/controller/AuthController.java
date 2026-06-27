@@ -4,6 +4,10 @@ import com.fxy.xixin.auth.dto.LoginDTO;
 import com.fxy.xixin.auth.dto.RegisterDTO;
 import com.fxy.xixin.auth.dto.TokenResult;
 import com.fxy.xixin.auth.service.AuthService;
+import com.fxy.xixin.common.annotation.RequireRole;
+import com.fxy.xixin.common.constant.ErrorCode;
+import com.fxy.xixin.common.context.UserContext;
+import com.fxy.xixin.common.exception.BusinessException;
 import com.fxy.xixin.common.result.R;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +60,29 @@ public class AuthController {
     @PostMapping("/register")
     public R<Void> register(@Valid @RequestBody RegisterDTO dto) {
         authService.register(dto);
+        return R.ok();
+    }
+
+    /**
+     * 更新当前用户头像
+     * <p>
+     * 先通过文件服务上传头像获取 URL，再调用此接口保存。
+     * 上传：POST /api/file/upload → 得到 fileUrl
+     * 保存：PUT /api/auth/avatar → 传入 fileUrl
+     * </p>
+     *
+     * <p><b>权限：PATIENT、DOCTOR、ADMIN</b></p>
+     *
+     * @param avatarUrl 文件服务返回的头像 URL
+     * @return 操作结果
+     */
+    @PutMapping("/avatar")
+    @RequireRole({"PATIENT", "DOCTOR", "ADMIN"})
+    public R<Void> updateAvatar(@RequestParam String avatarUrl) {
+        if (avatarUrl == null || avatarUrl.isBlank()) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "头像URL不能为空");
+        }
+        authService.updateAvatar(UserContext.getUserId(), avatarUrl);
         return R.ok();
     }
 }

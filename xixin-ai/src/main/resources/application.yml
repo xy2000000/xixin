@@ -1,0 +1,37 @@
+server:
+  port: 8160
+
+spring:
+  application:
+    name: xixin-ai
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: XIXIN_GROUP
+        failure-tolerance-enabled: true
+      config:
+        import-check:
+          enabled: false
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        file-extension: yml
+        group: XIXIN_GROUP
+  ai:
+    dashscope:
+      api-key: sk-ws-H.RYEHPMM.SN4w.MEQCIEHiBF1yvc12D7C-9UxbCXZA2nZY2gWYDiejJASPiPRmAiA3G4Ra4AmQBMLSr7mxXh4YanTINPvc3C0PWMS4NEnToQ
+      chat:
+        options:
+          model: qwen-plus
+      embedding:
+        options:
+          model: text-embedding-v3
+
+
+
+
+.

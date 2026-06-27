@@ -8,6 +8,7 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
   application:
     name: xixin-gateway
   cloud:
@@ -50,6 +51,14 @@ spring:
           uri: lb://xixin-report
           predicates:
             - Path=/api/report/**
+        - id: file-service
+          uri: lb://xixin-file
+          predicates:
+            - Path=/api/file/**
+        - id: ai-service
+          uri: lb://xixin-ai
+          predicates:
+            - Path=/api/ai/**
         - id: system-service
           uri: lb://xixin-system
           predicates:

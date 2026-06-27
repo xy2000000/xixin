@@ -1,0 +1,34 @@
+server:
+  port: 8150
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  application:
+    name: xixin-file
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: XIXIN_GROUP
+        failure-tolerance-enabled: true
+      config:
+        import-check:
+          enabled: false
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        file-extension: yml
+        group: XIXIN_GROUP
+
+minio:
+  endpoint: http://127.0.0.1:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket: xixin-files
+  presigned-url-expiry: 3600

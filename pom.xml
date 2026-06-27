@@ -27,6 +27,8 @@
         <module>xixin-exam</module>
         <module>xixin-report</module>
         <module>xixin-system</module>
+        <module>xixin-file</module>
+        <module>xixin-ai</module>
     </modules>
 
     <properties>

@@ -93,6 +93,16 @@ public class AuthServiceImpl implements AuthService {
      * @throws BusinessException 用户名已存在时抛出
      */
     @Override
+    public void updateAvatar(Long userId, String avatarUrl) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_EXIST);
+        }
+        user.setAvatar(avatarUrl);
+        userMapper.updateById(user);
+    }
+
+    @Override
     public void register(RegisterDTO dto) {
         // 检查用户名是否已存在
         boolean usernameTaken = userMapper.exists(new LambdaQueryWrapper<User>()

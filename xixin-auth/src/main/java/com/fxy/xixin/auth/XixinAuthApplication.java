@@ -27,3 +27,4 @@ public class XixinAuthApplication {
         SpringApplication.run(XixinAuthApplication.class, args);
     }
 }
+
