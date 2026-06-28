@@ -92,6 +92,24 @@ public class MinioFileStorageService implements FileStorageService {
                         .build());
                 log.info("MinIO Bucket 已自动创建: {}", storageConfig.getBucket());
             }
+            // 设置 Bucket 为公共可读（允许匿名访问图片等静态资源）
+            String policy = """
+                    {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": "*",
+                          "Action": "s3:GetObject",
+                          "Resource": "arn:aws:s3:::%s/*"
+                        }
+                      ]
+                    }
+                    """.formatted(storageConfig.getBucket());
+            minioClient.setBucketPolicy(SetBucketPolicyArgs.builder()
+                    .bucket(storageConfig.getBucket())
+                    .config(policy)
+                    .build());
         } catch (Exception e) {
             log.warn("检查/创建Bucket失败: {}", e.getMessage());
         }

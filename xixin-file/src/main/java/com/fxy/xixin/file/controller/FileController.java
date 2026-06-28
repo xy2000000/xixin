@@ -56,7 +56,8 @@ public class FileController {
             String fileUrl = fileStorageService.upload(is, objectKey, contentType);
             return R.ok(new FileUploadVO(objectKey, fileUrl, file.getSize(), contentType));
         } catch (Exception e) {
-            return R.fail(500, "文件上传失败: " + e.getMessage());
+            Throwable cause = e.getCause() != null ? e.getCause() : e;
+            return R.fail(500, "文件上传失败: " + cause.getMessage());
         }
     }
 }
