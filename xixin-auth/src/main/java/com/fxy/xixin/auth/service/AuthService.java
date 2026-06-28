@@ -19,10 +19,11 @@ public interface AuthService {
      * 用户登录认证
      * <p>
      * 校验用户名和密码，验证账号状态，生成并返回JWT令牌。
+     * 令牌结果中包含当前用户的基本信息（含头像URL）。
      * </p>
      *
      * @param dto 登录请求参数
-     * @return JWT令牌结果
+     * @return JWT令牌结果（含用户信息）
      */
     TokenResult login(LoginDTO dto);
 
@@ -43,4 +44,16 @@ public interface AuthService {
      * @param avatarUrl 头像URL（来自文件服务的上传结果）
      */
     void updateAvatar(Long userId, String avatarUrl);
+
+    /**
+     * 获取当前登录用户信息
+     * <p>
+     * 用于前端页面刷新后，根据 JWT 令牌重新获取用户基本信息（含头像URL）。
+     * 与登录返回的 userInfo 结构一致。
+     * </p>
+     *
+     * @param userId 当前用户ID（从 JWT 中解析）
+     * @return 用户简要信息（含头像URL）
+     */
+    TokenResult.UserInfo getCurrentUser(Long userId);
 }

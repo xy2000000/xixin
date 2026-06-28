@@ -64,6 +64,23 @@ public class AuthController {
     }
 
     /**
+     * 获取当前登录用户信息
+     * <p>
+     * 前端页面刷新后，携带 JWT 令牌调用此接口重新获取用户基本信息（含头像URL）。
+     * 返回字段与登录接口中的 userInfo 一致。
+     * </p>
+     *
+     * <p><b>权限：所有已登录用户</b></p>
+     *
+     * @return 当前用户简要信息（userId, username, realName, avatar, role）
+     */
+    @GetMapping("/me")
+    @RequireRole({"PATIENT", "DOCTOR", "ADMIN"})
+    public R<TokenResult.UserInfo> getCurrentUser() {
+        return R.ok(authService.getCurrentUser(UserContext.getUserId()));
+    }
+
+    /**
      * 更新当前用户头像
      * <p>
      * 先通过文件服务上传头像获取 URL，再调用此接口保存。

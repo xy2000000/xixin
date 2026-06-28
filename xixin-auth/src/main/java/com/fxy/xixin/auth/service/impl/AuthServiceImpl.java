@@ -76,7 +76,16 @@ public class AuthServiceImpl implements AuthService {
         // 登录成功，签发 JWT 令牌
         String accessToken = JwtUtils.generateAccessToken(user.getId(), user.getUsername(), user.getRole());
         String refreshToken = JwtUtils.generateRefreshToken(user.getId(), user.getUsername());
-        return new TokenResult(accessToken, refreshToken, 7200L);
+
+        // 构建返回给前端的用户信息（含头像URL）
+        TokenResult.UserInfo userInfo = new TokenResult.UserInfo(
+                user.getId(),
+                user.getUsername(),
+                user.getRealName(),
+                user.getAvatar(),
+                user.getRole()
+        );
+        return new TokenResult(accessToken, refreshToken, 7200L, userInfo);
     }
 
     /**
@@ -100,6 +109,21 @@ public class AuthServiceImpl implements AuthService {
         }
         user.setAvatar(avatarUrl);
         userMapper.updateById(user);
+    }
+
+    @Override
+    public TokenResult.UserInfo getCurrentUser(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_EXIST);
+        }
+        return new TokenResult.UserInfo(
+                user.getId(),
+                user.getUsername(),
+                user.getRealName(),
+                user.getAvatar(),
+                user.getRole()
+        );
     }
 
     @Override
